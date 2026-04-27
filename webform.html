@@ -1,0 +1,57 @@
+//read file data : csv
+
+            function GetFileData(url) {
+
+                
+
+                if (url.toLowerCase().endsWith(".csv") || url.toLowerCase().endsWith(".txt")) {
+
+ 
+
+                    // Simple manual parsing: split by line and then by comma
+
+                    return fetch(url)
+
+                        .then(response => response.text())
+
+                        .then(text => {
+
+                            const lines = text.trim().split('\n');
+
+                            const data = lines.map(row => row.split(','));
+
+                            console.log(data);
+
+                            return data;
+
+                        });  
+
+ 
+
+                } else if(url.endsWith('.json')){
+
+ 
+
+                    return fetch(url)
+
+                        .then(response => response.json())
+
+                        .then(jsonData => {
+
+                            const headers = Object.keys(jsonData[0]);             //1. get headers from first row keys
+
+                            const rows = jsonData.map(obj => Object.values(obj)); //2. Map through data to get values
+
+                            const normalizedArray = [headers, ...rows];           //3. Normalise - Combine headers and rows
+
+                            console.log(normalizedArray);
+
+                            return normalizedArray;
+
+                        });  
+
+                }
+
+            }
+
+
